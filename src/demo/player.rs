@@ -15,6 +15,8 @@ use crate::{
 };
 
 pub(super) fn plugin(app: &mut App) {
+    app.add_plugins((SpawnPlayerIntoLevel::plugin,));
+
     app.register_type::<Player>();
 
     app.register_type::<PlayerAssets>();
@@ -29,37 +31,36 @@ pub(super) fn plugin(app: &mut App) {
     );
 }
 
-/// The player character.
-pub fn player(
-    max_speed: f32,
-    player_assets: &PlayerAssets,
-    texture_atlas_layouts: &mut Assets<TextureAtlasLayout>,
-) -> impl Bundle {
-    // A texture atlas is a way to split a single image into a grid of related images.
-    // You can learn more in this example: https://github.com/bevyengine/bevy/blob/latest/examples/2d/texture_atlas.rs
-    let layout = TextureAtlasLayout::from_grid(UVec2::splat(32), 6, 2, Some(UVec2::splat(1)), None);
-    let texture_atlas_layout = texture_atlas_layouts.add(layout);
-    let player_animation = PlayerAnimation::new();
+#[derive(Event, Reflect)]
+pub(crate) struct SpawnPlayerIntoLevel;
 
-    (
-        Name::new("Player"),
-        Player,
-        Sprite {
-            image: player_assets.ducky.clone(),
-            texture_atlas: Some(TextureAtlas {
-                layout: texture_atlas_layout,
-                index: player_animation.get_atlas_index(),
-            }),
-            ..default()
-        },
-        Transform::from_scale(Vec2::splat(8.0).extend(1.0)),
-        MovementController {
-            max_speed,
-            ..default()
-        },
-        ScreenWrap,
-        player_animation,
-    )
+impl SpawnPlayerIntoLevel {
+    pub fn plugin(app: &mut App) {
+        app.add_observer(Self::observer).register_type::<Self>();
+    }
+    pub fn observer(
+        trigger: Trigger<SpawnPlayerIntoLevel>,
+        mut commands: Commands,
+        mut meshes: ResMut<Assets<Mesh>>,
+        mut materials: ResMut<Assets<ColorMaterial>>,
+    ) {
+        let shape = meshes.add(Circle::new(1.0));
+        let default_material = materials.add(Color::srgb(1., 1., 1.));
+
+        commands.spawn((
+            Name::new("Player"),
+            Player,
+            Mesh2d(shape.clone()),
+            MeshMaterial2d(default_material.clone()),
+            Transform::from_scale(Vec2::splat(8.0).extend(1.0)),
+            MovementController {
+                max_speed: 400.,
+                ..default()
+            },
+            ScreenWrap,
+            ChildOf(trigger.target()), // add player to the level that triggered the spawn, so it gets despawned at the same time.
+        ));
+    }
 }
 
 #[derive(Component, Debug, Clone, Copy, PartialEq, Eq, Default, Reflect)]
