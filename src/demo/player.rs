@@ -1,10 +1,12 @@
 //! Player-specific behavior.
 
+use avian2d::prelude::{Collider, LinearVelocity, RigidBody};
 use bevy::{
     image::{ImageLoaderSettings, ImageSampler},
     prelude::*,
 };
 
+use crate::demo::mouse_position::MousePosition;
 use crate::{
     AppSystems, PausableSystems,
     asset_tracking::LoadResource,
@@ -44,21 +46,24 @@ impl SpawnPlayerIntoLevel {
         mut meshes: ResMut<Assets<Mesh>>,
         mut materials: ResMut<Assets<ColorMaterial>>,
     ) {
-        let shape = meshes.add(Circle::new(1.0));
+        let radius = 10.0;
+        let shape = meshes.add(Circle::new(radius));
         let default_material = materials.add(Color::srgb(1., 1., 1.));
 
+        let level_entity = trigger.target();
         commands.spawn((
             Name::new("Player"),
             Player,
             Mesh2d(shape.clone()),
             MeshMaterial2d(default_material.clone()),
-            Transform::from_scale(Vec2::splat(8.0).extend(1.0)),
-            MovementController {
-                max_speed: 400.,
-                ..default()
-            },
+            Transform::default(),
+            MovementController { ..default() },
             ScreenWrap,
-            ChildOf(trigger.target()), // add player to the level that triggered the spawn, so it gets despawned at the same time.
+            ChildOf(level_entity), // add player to the level that triggered the spawn, so it gets despawned at the same time.
+            // physics
+            RigidBody::Dynamic,
+            LinearVelocity::default(),
+            Collider::circle(radius),
         ));
     }
 }
@@ -68,30 +73,12 @@ impl SpawnPlayerIntoLevel {
 struct Player;
 
 fn record_player_directional_input(
-    input: Res<ButtonInput<KeyCode>>,
-    mut controller_query: Query<&mut MovementController, With<Player>>,
+    mut controller_query: Query<(&mut MovementController, &Transform), With<Player>>,
+    mouse_position: Res<MousePosition>,
 ) {
-    // Collect directional input.
-    let mut intent = Vec2::ZERO;
-    if input.pressed(KeyCode::KeyW) || input.pressed(KeyCode::ArrowUp) {
-        intent.y += 1.0;
-    }
-    if input.pressed(KeyCode::KeyS) || input.pressed(KeyCode::ArrowDown) {
-        intent.y -= 1.0;
-    }
-    if input.pressed(KeyCode::KeyA) || input.pressed(KeyCode::ArrowLeft) {
-        intent.x -= 1.0;
-    }
-    if input.pressed(KeyCode::KeyD) || input.pressed(KeyCode::ArrowRight) {
-        intent.x += 1.0;
-    }
-
-    // Normalize intent so that diagonal movement is the same speed as horizontal / vertical.
-    // This should be omitted if the input comes from an analog stick instead.
-    let intent = intent.normalize_or_zero();
-
     // Apply movement intent to controllers.
-    for mut controller in &mut controller_query {
+    for (mut controller, t) in &mut controller_query {
+        let intent = (mouse_position.0 - t.translation.xy()).normalize();
         controller.intent = intent;
     }
 }

@@ -12,6 +12,7 @@ mod menus;
 mod screens;
 mod theme;
 
+use avian2d::PhysicsPlugins;
 use bevy::{asset::AssetMetaCheck, prelude::*};
 use bevy::window::PresentMode;
 
@@ -57,6 +58,10 @@ impl Plugin for AppPlugin {
             theme::plugin,
             framepace::plugin,
         ));
+
+        // avian physics
+        app.add_plugins(PhysicsPlugins::default());
+        app.insert_resource(avian2d::prelude::Gravity(Vec2::ZERO));
 
         // Order new `AppSystems` variants by adding them here:
         app.configure_sets(
