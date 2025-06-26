@@ -12,6 +12,7 @@ pub mod player;
 mod mouse_position;
 mod cell_bundle;
 mod enemy;
+mod eating;
 
 pub(super) fn plugin(app: &mut App) {
     app.add_plugins((
@@ -21,5 +22,6 @@ pub(super) fn plugin(app: &mut App) {
         player::plugin,
         enemy::plugin,
         mouse_position::plugin,
+        eating::plugin,
     ));
 }

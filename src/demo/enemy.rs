@@ -29,7 +29,7 @@ impl SpawnEnemyIntoLevel {
     ) {
         
         // random radius with bias towards smaller values
-        let (min_radius, max_radius) = (10., 200.);
+        let (min_radius, max_radius) = (10., 50.);
         let bias = 7.0; // higher = more biased towards smaller values
         let radius = min_radius + random::<f32>().powf(bias) * max_radius;
 
