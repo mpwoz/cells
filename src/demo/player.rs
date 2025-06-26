@@ -8,13 +8,14 @@ use bevy::{
 
 use crate::demo::mouse_position::MousePosition;
 use crate::{
-    AppSystems, PausableSystems,
-    asset_tracking::LoadResource,
-    demo::{
+    asset_tracking::LoadResource, demo::{
         animation::PlayerAnimation,
         movement::{MovementController, ScreenWrap},
     },
+    AppSystems,
+    PausableSystems,
 };
+use crate::demo::cell_bundle::CellBundle;
 
 pub(super) fn plugin(app: &mut App) {
     app.add_plugins((SpawnPlayerIntoLevel::plugin,));
@@ -46,24 +47,17 @@ impl SpawnPlayerIntoLevel {
         mut meshes: ResMut<Assets<Mesh>>,
         mut materials: ResMut<Assets<ColorMaterial>>,
     ) {
-        let radius = 10.0;
+        let radius = 25.0;
         let shape = meshes.add(Circle::new(radius));
         let default_material = materials.add(Color::srgb(1., 1., 1.));
 
         let level_entity = trigger.target();
         commands.spawn((
-            Name::new("Player"),
             Player,
+            CellBundle::new("Player", level_entity, Vec2::ZERO, radius),
             Mesh2d(shape.clone()),
             MeshMaterial2d(default_material.clone()),
-            Transform::default(),
             MovementController { ..default() },
-            ScreenWrap,
-            ChildOf(level_entity), // add player to the level that triggered the spawn, so it gets despawned at the same time.
-            // physics
-            RigidBody::Kinematic,
-            LinearVelocity::default(),
-            Collider::circle(radius),
         ));
     }
 }

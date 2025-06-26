@@ -2,6 +2,7 @@
 
 use bevy::prelude::*;
 
+use crate::demo::enemy::SpawnEnemyIntoLevel;
 use crate::demo::player::SpawnPlayerIntoLevel;
 use crate::{
     asset_tracking::LoadResource, audio::music, demo::player::PlayerAssets, screens::Screen,
@@ -30,16 +31,19 @@ impl FromWorld for LevelAssets {
 
 /// A system that spawns the main level.
 pub fn spawn_level(mut commands: Commands, level_assets: Res<LevelAssets>) {
-    commands
-        .spawn((
-            Name::new("Level"),
-            Transform::default(),
-            Visibility::default(),
-            StateScoped(Screen::Gameplay),
-            children![(
-                Name::new("Gameplay Music"),
-                music(level_assets.music.clone())
-            )],
-        ))
-        .trigger(SpawnPlayerIntoLevel);
+    let mut ec = commands.spawn((
+        Name::new("Level"),
+        Transform::default(),
+        Visibility::default(),
+        StateScoped(Screen::Gameplay),
+        children![(
+            Name::new("Gameplay Music"),
+            music(level_assets.music.clone())
+        )],
+    ));
+    
+    ec.trigger(SpawnPlayerIntoLevel);
+    for i in 0..50 {
+        ec.trigger(SpawnEnemyIntoLevel);
+    }
 }
