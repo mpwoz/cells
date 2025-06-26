@@ -61,7 +61,7 @@ impl SpawnPlayerIntoLevel {
             ScreenWrap,
             ChildOf(level_entity), // add player to the level that triggered the spawn, so it gets despawned at the same time.
             // physics
-            RigidBody::Dynamic,
+            RigidBody::Kinematic,
             LinearVelocity::default(),
             Collider::circle(radius),
         ));
