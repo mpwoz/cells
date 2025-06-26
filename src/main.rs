@@ -13,6 +13,7 @@ mod screens;
 mod theme;
 
 use bevy::{asset::AssetMetaCheck, prelude::*};
+use bevy::window::PresentMode;
 
 fn main() -> AppExit {
     App::new().add_plugins(AppPlugin).run()
@@ -36,6 +37,7 @@ impl Plugin for AppPlugin {
                     primary_window: Window {
                         title: "Cells".to_string(),
                         fit_canvas_to_parent: true,
+                        present_mode: PresentMode::Immediate, // VSYNC off for now
                         ..default()
                     }
                     .into(),
@@ -53,6 +55,7 @@ impl Plugin for AppPlugin {
             menus::plugin,
             screens::plugin,
             theme::plugin,
+            framepace::plugin,
         ));
 
         // Order new `AppSystems` variants by adding them here:
@@ -99,4 +102,22 @@ struct PausableSystems;
 
 fn spawn_camera(mut commands: Commands) {
     commands.spawn((Name::new("Camera"), Camera2d));
+}
+
+
+mod framepace {
+    use bevy::prelude::*;
+    use bevy_framepace::{FramepacePlugin, FramepaceSettings, Limiter};
+
+    pub fn plugin(app: &mut App) {
+        // todo
+        app.add_plugins(FramepacePlugin);
+
+        app.add_systems(Startup, lock_fps);
+    }
+    fn lock_fps(mut fp: ResMut<FramepaceSettings>) {
+        fp.limiter = Limiter::from_framerate(60.); // lock rendering to 60fps for now
+    }
+
+
 }
