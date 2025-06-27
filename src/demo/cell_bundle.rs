@@ -2,7 +2,6 @@ use bevy::prelude::{Bundle, ChildOf, Component, Entity, Name, Transform};
 use bevy::math::Vec2;
 use avian2d::prelude::{Collider, CollisionEventsEnabled, RigidBody};
 use tracing::info;
-use crate::demo::movement::ScreenWrap;
 
 #[derive(Component)]
 pub struct CellCreature;

@@ -1,6 +1,6 @@
 //! Player-specific behavior.
 
-use avian2d::prelude::{Collider, LinearVelocity, RigidBody};
+use avian2d::prelude::{LinearVelocity, RigidBody};
 use bevy::{
     image::{ImageLoaderSettings, ImageSampler},
     prelude::*,
@@ -9,8 +9,7 @@ use bevy::{
 use crate::demo::mouse_position::MousePosition;
 use crate::{
     asset_tracking::LoadResource, demo::{
-        animation::PlayerAnimation,
-        movement::{MovementController, ScreenWrap},
+        movement::{MovementController},
     },
     AppSystems,
     PausableSystems,

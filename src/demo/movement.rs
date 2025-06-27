@@ -13,7 +13,7 @@
 //! purposes. If you want to move the player in a smoother way,
 //! consider using a [fixed timestep](https://github.com/bevyengine/bevy/blob/main/examples/movement/physics_in_fixed_timestep.rs).
 
-use avian2d::prelude::{ExternalForce, LinearVelocity};
+use avian2d::prelude::{LinearVelocity};
 use bevy::{prelude::*, window::PrimaryWindow};
 
 use crate::{AppSystems, PausableSystems};
@@ -55,7 +55,6 @@ impl Default for MovementController {
 }
 
 fn apply_movement(
-    time: Res<Time>,
     mut movement_query: Query<(&MovementController, &mut LinearVelocity)>,
 ) {
     for (controller, mut linear_vel) in &mut movement_query {

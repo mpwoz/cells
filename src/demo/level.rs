@@ -5,7 +5,7 @@ use bevy::prelude::*;
 use crate::demo::enemy::SpawnEnemyIntoLevel;
 use crate::demo::player::SpawnPlayerIntoLevel;
 use crate::{
-    asset_tracking::LoadResource, audio::music, demo::player::PlayerAssets, screens::Screen,
+    asset_tracking::LoadResource, audio::music, screens::Screen,
 };
 
 pub(super) fn plugin(app: &mut App) {
@@ -44,7 +44,7 @@ pub fn spawn_level(mut commands: Commands, level_assets: Res<LevelAssets>) {
     ));
     
     ec.trigger(SpawnPlayerIntoLevel);
-    for i in 0..200 {
+    for _ in 0..200 {
         ec.trigger(SpawnEnemyIntoLevel);
     }
 }

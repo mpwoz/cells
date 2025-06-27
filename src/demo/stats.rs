@@ -1,5 +1,4 @@
 use crate::demo::eating::EatenBy;
-use crate::demo::player::Player;
 use bevy::prelude::*;
 
 pub fn plugin(app: &mut App) {

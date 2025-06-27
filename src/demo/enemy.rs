@@ -2,8 +2,8 @@ use crate::demo::cell_bundle::CellBundle;
 use crate::demo::movement::MovementController;
 use bevy::color::palettes;
 use bevy::prelude::*;
-use rand::{Rng, random};
-use rand_distr::{Distribution, LogNormal, Pareto};
+use rand::random;
+use rand_distr::{Distribution, Pareto};
 
 pub fn plugin(app: &mut App) {
     app.add_plugins(SpawnEnemyIntoLevel::plugin)

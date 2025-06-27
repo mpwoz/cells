@@ -133,7 +133,7 @@ impl PlayerAnimation {
         }
     }
 
-    pub fn new() -> Self {
+    pub fn _new() -> Self {
         Self::idling()
     }
 
