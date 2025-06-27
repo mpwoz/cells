@@ -86,7 +86,12 @@ mod tests {
         for i in 0..1000 {
             let min_range = 100.;
             let p = SpawnEnemyIntoLevel::random_position(min_range, min_range + 10.);
-            assert!(p.length() > min_range, "{:?} was within the safe zone {:?}", p, p.length());
+            assert!(
+                p.length() > min_range,
+                "{:?} was within the safe zone {:?}",
+                p,
+                p.length()
+            );
         }
     }
 }

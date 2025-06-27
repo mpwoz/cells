@@ -70,7 +70,9 @@ mod world_inspector {
     use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
     pub fn plugin(app: &mut App) {
-        app.add_plugins(EguiPlugin { enable_multipass_for_primary_context: true });
+        app.add_plugins(EguiPlugin {
+            enable_multipass_for_primary_context: true,
+        });
         app.add_plugins(WorldInspectorPlugin::default());
     }
 }

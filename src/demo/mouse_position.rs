@@ -7,7 +7,6 @@ pub fn plugin(app: &mut App) {
     app.register_type::<MousePosition>();
 }
 
-
 /// We will store the world position of the mouse cursor here.
 #[derive(Resource, Default, Reflect)]
 #[reflect(Resource)]
@@ -17,7 +16,7 @@ fn my_cursor_system(
     mut mycoords: ResMut<MousePosition>,
     q_window: Single<&Window, With<PrimaryWindow>>,
     q_camera: Single<(&Camera, &GlobalTransform)>,
-) -> Result<()>{
+) -> Result<()> {
     let window = q_window.into_inner();
     let (camera, camera_transform) = q_camera.into_inner();
 

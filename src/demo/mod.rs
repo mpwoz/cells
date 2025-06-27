@@ -6,13 +6,13 @@
 use bevy::prelude::*;
 
 mod animation;
+mod cell_bundle;
+mod eating;
+mod enemy;
 pub mod level;
+mod mouse_position;
 mod movement;
 pub mod player;
-mod mouse_position;
-mod cell_bundle;
-mod enemy;
-mod eating;
 mod stats;
 
 pub(super) fn plugin(app: &mut App) {

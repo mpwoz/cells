@@ -13,8 +13,8 @@ mod screens;
 mod theme;
 
 use avian2d::PhysicsPlugins;
-use bevy::{asset::AssetMetaCheck, prelude::*};
 use bevy::window::PresentMode;
+use bevy::{asset::AssetMetaCheck, prelude::*};
 
 fn main() -> AppExit {
     App::new().add_plugins(AppPlugin).run()
@@ -109,7 +109,6 @@ fn spawn_camera(mut commands: Commands) {
     commands.spawn((Name::new("Camera"), Camera2d));
 }
 
-
 mod framepace {
     use bevy::prelude::*;
     use bevy_framepace::{FramepacePlugin, FramepaceSettings, Limiter};
@@ -123,6 +122,4 @@ mod framepace {
     fn lock_fps(mut fp: ResMut<FramepaceSettings>) {
         fp.limiter = Limiter::from_framerate(60.); // lock rendering to 60fps for now
     }
-
-
 }

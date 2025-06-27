@@ -1,6 +1,6 @@
-use bevy::prelude::{Bundle, ChildOf, Component, Entity, Name, Transform};
-use bevy::math::Vec2;
 use avian2d::prelude::{Collider, CollisionEventsEnabled, RigidBody};
+use bevy::math::Vec2;
+use bevy::prelude::{Bundle, ChildOf, Component, Entity, Name, Transform};
 use tracing::info;
 
 #[derive(Component)]

@@ -1,7 +1,7 @@
-use std::collections::HashSet;
 use crate::demo::cell_bundle::{CellCreature, CellSize};
 use avian2d::prelude::*;
 use bevy::prelude::*;
+use std::collections::HashSet;
 
 pub fn plugin(app: &mut App) {
     app.add_observer(detect_cell_collisions)
@@ -34,14 +34,20 @@ fn detect_cell_collisions(
         // Determine which cell eats which (larger eats smaller)
         let (eater, eaten) = if s1 > s2 { (e1, e2) } else { (e2, e1) };
 
-        if !cache.entities.contains(&eaten) && let Ok(mut ec) = commands.get_entity(eaten) {
+        if !cache.entities.contains(&eaten)
+            && let Ok(mut ec) = commands.get_entity(eaten)
+        {
             ec.trigger(EatenBy { eater });
             cache.entities.insert(eaten.clone());
         }
     }
 }
 
-fn clean_up_eaten_cells(eaten: Trigger<EatenBy>, mut commands: Commands, mut cache: ResMut<CollisionsAlreadyProcessedCache>) {
+fn clean_up_eaten_cells(
+    eaten: Trigger<EatenBy>,
+    mut commands: Commands,
+    mut cache: ResMut<CollisionsAlreadyProcessedCache>,
+) {
     let entity = eaten.target();
     if let Ok(mut ec) = commands.get_entity(entity) {
         ec.despawn();

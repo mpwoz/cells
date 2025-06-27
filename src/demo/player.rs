@@ -6,16 +6,12 @@ use bevy::{
     prelude::*,
 };
 
-use crate::demo::mouse_position::MousePosition;
-use crate::{
-    asset_tracking::LoadResource, demo::{
-        movement::{MovementController},
-    },
-    AppSystems,
-    PausableSystems,
-};
 use crate::demo::cell_bundle::CellBundle;
+use crate::demo::mouse_position::MousePosition;
 use crate::demo::stats::StatsTracker;
+use crate::{
+    AppSystems, PausableSystems, asset_tracking::LoadResource, demo::movement::MovementController,
+};
 
 pub(super) fn plugin(app: &mut App) {
     app.add_plugins((SpawnPlayerIntoLevel::plugin,));
