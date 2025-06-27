@@ -1,6 +1,5 @@
 //! Player-specific behavior.
 
-use avian2d::prelude::{LinearVelocity, RigidBody};
 use bevy::{
     image::{ImageLoaderSettings, ImageSampler},
     prelude::*,

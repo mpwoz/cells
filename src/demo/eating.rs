@@ -38,7 +38,7 @@ fn detect_cell_collisions(
             && let Ok(mut ec) = commands.get_entity(eaten)
         {
             ec.trigger(EatenBy { eater });
-            cache.entities.insert(eaten.clone());
+            cache.entities.insert(eaten);
         }
     }
 }
