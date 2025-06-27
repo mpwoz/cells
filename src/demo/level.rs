@@ -40,6 +40,7 @@ pub fn spawn_level(mut commands: Commands, level_assets: Res<LevelAssets>) {
             Name::new("Gameplay Music"),
             music(level_assets.music.clone())
         )],
+        
     ));
     
     ec.trigger(SpawnPlayerIntoLevel);

@@ -16,6 +16,7 @@ use crate::{
     PausableSystems,
 };
 use crate::demo::cell_bundle::CellBundle;
+use crate::demo::stats::StatsTracker;
 
 pub(super) fn plugin(app: &mut App) {
     app.add_plugins((SpawnPlayerIntoLevel::plugin,));
@@ -58,13 +59,14 @@ impl SpawnPlayerIntoLevel {
             Mesh2d(shape.clone()),
             MeshMaterial2d(default_material.clone()),
             MovementController { ..default() },
+            StatsTracker::default(),
         ));
     }
 }
 
 #[derive(Component, Debug, Clone, Copy, PartialEq, Eq, Default, Reflect)]
 #[reflect(Component)]
-struct Player;
+pub struct Player;
 
 fn record_player_directional_input(
     mut controller_query: Query<(&mut MovementController, &Transform), With<Player>>,

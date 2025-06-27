@@ -77,11 +77,10 @@ impl SpawnEnemyIntoLevel {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_random_position() {
         for i in 0..1000 {
