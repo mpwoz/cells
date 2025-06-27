@@ -1874,6 +1874,7 @@ dependencies = [
  "iyes_perf_ui",
  "log",
  "rand",
+ "rand_distr",
  "tracing",
 ]
 

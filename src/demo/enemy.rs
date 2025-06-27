@@ -2,6 +2,7 @@ use crate::demo::cell_bundle::CellBundle;
 use crate::demo::movement::MovementController;
 use bevy::prelude::*;
 use rand::{random, Rng};
+use rand_distr::{LogNormal, Distribution, Pareto};
 
 pub fn plugin(app: &mut App) {
     app.add_plugins(SpawnEnemyIntoLevel::plugin)
@@ -29,9 +30,11 @@ impl SpawnEnemyIntoLevel {
     ) {
         
         // random radius with bias towards smaller values
-        let (min_radius, max_radius) = (10., 50.);
-        let bias = 7.0; // higher = more biased towards smaller values
-        let radius = min_radius + random::<f32>().powf(bias) * max_radius;
+        let (min_radius, max_radius) = (5., 100.);
+        // Pareto with α = 1.0 gives P(x) ∝ 1/x
+        let pareto:Pareto<f32> = Pareto::new(min_radius, 1.0).unwrap();
+        let mut rng = rand::thread_rng();
+        let radius = pareto.sample(&mut rng).min(max_radius);
 
         // random position
         let range = 1000.;

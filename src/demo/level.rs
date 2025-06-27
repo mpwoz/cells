@@ -43,7 +43,7 @@ pub fn spawn_level(mut commands: Commands, level_assets: Res<LevelAssets>) {
     ));
     
     ec.trigger(SpawnPlayerIntoLevel);
-    for i in 0..50 {
+    for i in 0..200 {
         ec.trigger(SpawnEnemyIntoLevel);
     }
 }
